@@ -23,7 +23,7 @@ class App extends Component {
         <Text>Name: {user.name}</Text>
         <Text>Email: {user.email}</Text>
         <Text>Phone: {user.phone}</Text>
-        <Accounts user={user.email}/>
+        <Accounts user={user.email} navigator={this.props.navigator}/>
         <Button backgroundColor="tomato" title="Add Account" onPress={() => this.props.navigator.push({ id: 'account-form' })}/>
 
       </View>

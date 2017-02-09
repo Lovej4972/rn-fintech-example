@@ -12,7 +12,6 @@ import CashAccount from '../dataTypes/accounts/CashAccount';
 import DebtAccount from '../dataTypes/accounts/DebtAccount';
 import InvestmentAccount from '../dataTypes/accounts/InvestmentAccount';
 import Form from './Form';
-
 class AccountForm extends Component {
   constructor(props) {
     super(props);
@@ -44,13 +43,13 @@ class AccountForm extends Component {
     this.props.addAccount(account, this.props.email);
     this.props.navigator.pop();
   }
-  // showHoldingsInput() {
-  //   return (
-  //     <View>
-  //       <FormLabel>Holdings</FormLabel>
-  //       <FormInput keyboardType="numeric" onChangeText={(txt) => this.setState({ holdings: parseFloat(txt)})} />
-  //     </View>)
-  // }
+  showHoldingsInput() {
+    return (
+      <View>
+        <FormLabel>Holdings</FormLabel>
+        <FormInput keyboardType="numeric" onChangeText={(txt) => this.setState({ holdings: parseFloat(txt)})} />
+      </View>)
+  }
   updateIndex(selectedIndex) {
     const type = { 0: 'CASH', 1: 'DEBT', 2:'INVESTMENT'};
     this.setState({
@@ -69,11 +68,11 @@ class AccountForm extends Component {
           buttons={buttons}
           containerStyle={{ height: 50 }}
         />
-
         <Form
-          setFormData={this.setState.bind(this)}
+          setFormData={this.setState}
           type={this.state.type}
         />
+      {(this.state.type === 'INVESTMENT') && this.showHoldingsInput()}
         <Button title="Add Account" onPress={this.addAccount}/>
       </View>
     );

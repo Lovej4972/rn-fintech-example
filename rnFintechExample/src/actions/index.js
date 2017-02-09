@@ -3,6 +3,7 @@ import {
   ADD_ACCOUNT,
   UPDATE_ACCOUNT,
   REMOVE_ACCOUNT,
+  SET_SELECTED_ACCOUNT,
 } from './types';
 
 export const setUserAction = user => ({
@@ -19,8 +20,12 @@ export const addAccountAction = (account, email) => ({
   account,
   email,
 });
-export const removeAccountAction = (account, email) => ({
+export const removeAccountAction = (selectedAccount, email) => ({
   type: REMOVE_ACCOUNT,
-  account,
+  selectedAccount,
   email,
+});
+export const setSelectedAccountAction = selectedAccount => ({
+  type: SET_SELECTED_ACCOUNT,
+  selectedAccount,
 });
