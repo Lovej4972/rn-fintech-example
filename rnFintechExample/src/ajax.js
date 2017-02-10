@@ -7,7 +7,7 @@ const HOST = 'https://rnfintechex.herokuapp.com/';
 const LOCALHOST = 'http://localhost:8080/';
 
 const serverRequest = (url, params) =>
-  fetch(`${LOCALHOST}${url}`, {
+  fetch(`${HOST}${url}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

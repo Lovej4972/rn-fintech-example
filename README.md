@@ -16,7 +16,7 @@ requirements:
 
  * run the application `react-native run-ios`
 
- * note the server needs to be running locally in order for the client application to work currectly. follow the instructions to install and run the server: https://github.com/shyaniv7/rn-fintech-example/tree/master/server
+ * note the server is deployed on heroku https://rnfintechex.herokuapp.com/ if you want to run it locally in order for the client application to work correctly. follow the instructions to install and run the server: https://github.com/shyaniv7/rn-fintech-example/tree/master/server
 
 ### Description
   This mobile app will help you manage you finances by adding cash, investment and debt accounts and view your networth
