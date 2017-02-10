@@ -1,5 +1,7 @@
 # rn-fintech-example
 
+gif demo: http://recordit.co/EDlomi63FE
+
 ## client - Mobile app
 
 ### Install
