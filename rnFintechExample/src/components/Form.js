@@ -4,6 +4,7 @@ import {
   View,
   Text,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements'
 
@@ -46,7 +47,7 @@ export default class Form extends Component {
     const buttons = ['Cash Account', 'Debt Account', 'Investment Account'];
     console.info('form: ', this.props)
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <FormLabel>Name</FormLabel>
         <FormInput defaultValue={this.props.formData && this.props.formData.name || ''} onChangeText={(txt) => this.props.setFormData({ name: txt})}/>
         <FormLabel>Balance</FormLabel>
@@ -57,7 +58,7 @@ export default class Form extends Component {
         />
       {(this.props.type === 'INVESTMENT') && this.showHoldingsInputs()}
       {(this.props.type === 'INVESTMENT') && <Button textStyle={styles.buttonTxt} buttonStyle={styles.button} title="Add Holding" onPress={() => this.addHoldingsInput(this.state.holdingsCount + 1)} />}
-      </View>
+      </ScrollView>
     );
   }
 }
