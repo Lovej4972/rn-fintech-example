@@ -5,11 +5,13 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
+import { Icon } from 'react-native-elements';
 
-const Header = () => (
+const Header = ({ title='', showBackButton = true, navigator }) => (
   <View style={styles.container}>
     <StatusBar backgroundColor="tomato" />
-    <Text style={styles.title}>Welcome</Text>
+    {showBackButton && <Icon name="navigate-before" onPress={() => navigator.pop()} />}
+    <Text style={styles.title}>{title}</Text>
   </View>
 );
 

@@ -13,6 +13,10 @@ import DebtAccount from '../dataTypes/accounts/DebtAccount';
 import InvestmentAccount from '../dataTypes/accounts/InvestmentAccount';
 import Form from './Form';
 
+/**
+ * AccountForm - Add account form will allow adding a new account
+ * @extends Component
+ */
 class AccountForm extends Component {
   constructor(props) {
     super(props);
@@ -26,31 +30,38 @@ class AccountForm extends Component {
     this.addAccount = this.addAccount.bind(this);
     this.updateIndex = this.updateIndex.bind(this);
   }
+
+  /**
+   * addAccount - create the account object based on the type selectedIndex
+   * from the button group, and navigate back to the account summary
+   * @returns {undefined}
+   */
   addAccount() {
     let account;
-    switch(this.state.type) {
+    const { name, balance, type } = this.state;
+    const { email, navigator, addAccount } = this.props;
+    switch(type) {
       case 'CASH':
-        account = new CashAccount(this.state.name, this.state.balance);
+        account = new CashAccount(name, balance);
         break;
       case 'DEBT':
-        account = new DebtAccount(this.state.name, this.state.balance);
+        account = new DebtAccount(name, balance);
         break;
       case 'INVESTMENT':
-        account = new InvestmentAccount(this.state.name, this.state.balance, this.state.holdings);
+        account = new InvestmentAccount(name, balance, this.state.holdings);
         break;
       default:
         break;
     }
-    this.props.addAccount(account, this.props.email);
-    this.props.navigator.pop();
+    addAccount(account, email);
+    navigator.pop();
   }
-  // showHoldingsInput() {
-  //   return (
-  //     <View>
-  //       <FormLabel>Holdings</FormLabel>
-  //       <FormInput keyboardType="numeric" onChangeText={(txt) => this.setState({ holdings: parseFloat(txt)})} />
-  //     </View>)
-  // }
+
+  /**
+   * updateIndex - update the account
+   * @param {number} selectedIndex - account index
+   * @returns {undefined}
+   */
   updateIndex(selectedIndex) {
     const type = { 0: 'CASH', 1: 'DEBT', 2:'INVESTMENT'};
     this.setState({
@@ -60,21 +71,24 @@ class AccountForm extends Component {
   }
   render() {
     const buttons = ['Cash Account', 'Debt Account', 'Investment Account'];
+    const { navigator } = this.props;
+    const { type, selectedIndex } = this.state;
     return (
       <View style={styles.container}>
-        <Header />
+        <Header navigator={navigator}/>
         <ButtonGroup
+          selectedBackgroundColor="tomato"
+          selectedTextStyle={{ color: 'white' }}
           onPress={this.updateIndex}
-          selectedIndex={this.state.selectedIndex}
+          selectedIndex={selectedIndex}
           buttons={buttons}
           containerStyle={{ height: 50 }}
         />
-
         <Form
           setFormData={this.setState.bind(this)}
-          type={this.state.type}
+          type={type}
         />
-        <Button title="Add Account" onPress={this.addAccount}/>
+      <Button backgroundColor="tomato" buttonStyle={styles.button} title="Add Account" onPress={this.addAccount}/>
       </View>
     );
   }
@@ -83,6 +97,10 @@ class AccountForm extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  button: {
+    marginLeft: 0,
+    marginRight: 0,
   },
 });
 const mapPropsToState = state => ({

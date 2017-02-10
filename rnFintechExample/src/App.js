@@ -6,26 +6,26 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Button } from 'react-native-elements';
+
 import { setUserAction } from './actions';
 import Header from './components/Header';
 import User from './dataTypes/User';
+import UserInfo from './components/UserInfo';
 import Accounts from './components/Accounts';
 
 class App extends Component {
   componentDidMount() {
-    this.props.setUser(new User("Yaniv Shnaider", "shyaniv7@gmail.com", "573-823-3103"));
+    // set default user for demo purposes
+    this.props.setUser(new User("John Smith", "john.smith@gmail.com", "618-111-2222"));
   }
   render() {
-    const { user, accounts } = this.props;
+    const { user, accounts, navigator } = this.props;
     return (
       <View style={styles.container}>
-        <Header title="Welcome" />
-        <Text>Name: {user.name}</Text>
-        <Text>Email: {user.email}</Text>
-        <Text>Phone: {user.phone}</Text>
-        <Accounts user={user.email} navigator={this.props.navigator}/>
-        <Button backgroundColor="tomato" title="Add Account" onPress={() => this.props.navigator.push({ id: 'account-form' })}/>
-
+        <Header title="FinTech Example App" navigator={navigator} showBackButton={false}/>
+        <UserInfo />
+        <Accounts navigator={navigator}/>
+        <Button buttonStyle={styles.button} backgroundColor="tomato" title="Add Account" onPress={() => navigator.push({ id: 'account-form' })}/>
       </View>
     );
   }
@@ -35,11 +35,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  button: {
+    marginLeft: 0,
+    marginRight: 0,
+  }
 });
-const mapPropsToState = state => ({
-  user: state.user,
-  accounts: state.accounts,
-});
+const mapPropsToState = ({ accounts }) => ({ accounts });
 const mapDispatchToProps = dispatch => ({
   setUser: user => dispatch(setUserAction(user)),
 });

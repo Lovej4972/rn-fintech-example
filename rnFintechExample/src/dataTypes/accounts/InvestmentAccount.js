@@ -5,11 +5,15 @@ export default class InvestmentAccount extends Account {
     super(name, balance);
     this.holdings = holdings;
     this.icon = 'show-chart';
+    this.type = 'INVESTMENT';
   }
   getHoldings() {
     return this.holdings;
   }
   setHoldings() {
     this.holdings = holdings;
+  }
+  addHolding(holding) {
+    this.holdings.push(holding);
   }
 }
