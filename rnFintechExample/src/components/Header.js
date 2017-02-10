@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import {
   StatusBar,
   View,
@@ -14,7 +14,11 @@ const Header = ({ title='', showBackButton = true, navigator }) => (
     <Text style={styles.title}>{title}</Text>
   </View>
 );
-
+Header.propTypes = {
+  title: PropTypes.string,
+  showBackButton: PropTypes.bool,
+  navigator: PropTypes.object.isRequired,
+};
 export default Header;
 
 const styles = StyleSheet.create({

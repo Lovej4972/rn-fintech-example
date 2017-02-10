@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
   View,
@@ -46,7 +46,7 @@ class Accounts extends Component {
             onPress={() => this.goToAccount(i)}
             subtitle={<Text>Balance: ${account.balance} {(account.type === 'INVESTMENT' && `Holdings: $${account.holdings}`)}</Text>}
             title={<Text>{account.name}</Text>}
-            leftIcon={{name: account.icon, color: (account.type === 'DEBT' ? 'red' : 'green')}}
+            leftIcon={{ name: account.icon, color: (account.type === 'DEBT' ? 'red' : 'green') }}
           />
         ))
       }
@@ -55,7 +55,11 @@ class Accounts extends Component {
   noAccountsAvailable() {
     return (<View>
       <Text style={styles.text}>No Accounts Available</Text>
-      <Image style={styles.image} resizeMode="stretch" source={{ uri: 'https://cdn2.iconfinder.com/data/icons/ecology-and-nature/64/_Dead_Flower-256.png' }}/>
+      <Image
+        style={styles.image}
+        resizeMode="stretch"
+        source={{ uri: 'https://cdn2.iconfinder.com/data/icons/ecology-and-nature/64/_Dead_Flower-256.png' }}
+      />
       </View>)
   }
   render() {
@@ -71,7 +75,12 @@ class Accounts extends Component {
     );
   }
 }
-
+Accounts.propTypes = {
+  accounts: PropTypes.arrayOf(PropTypes.object),
+  networth: PropTypes.number.isRequired,
+  navigator: PropTypes.object.isRequired,
+  setSelectedAccount: PropTypes.func.isRequired,
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

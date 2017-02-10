@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
   View,
@@ -27,10 +27,14 @@ export default class Form extends Component {
    */
   showHoldingsInputs() {
     let inputs = [];
-    for(let i = 0; i<this.state.holdingsCount; i++) {
+    for (let i = 0; i<this.state.holdingsCount; i++) {
       inputs.push(<View key={i}>
         <FormLabel>Holding Value {i + 1}</FormLabel>
-        <FormInput keyboardType="numeric" defaultValue={(this.props.formData && this.props.formData.holdings || '').toString()} onChangeText={(txt) => this.props.setFormData({ holdings: parseInt(txt)})} />
+        <FormInput
+          keyboardType="numeric"
+          defaultValue={(this.props.formData && this.props.formData.holdings || '').toString()}
+          onChangeText={(txt) => this.props.setFormData({ holdings: parseInt(txt)})}
+        />
       </View>)
     }
     return inputs;
@@ -45,11 +49,13 @@ export default class Form extends Component {
   }
   render() {
     const buttons = ['Cash Account', 'Debt Account', 'Investment Account'];
-    console.info('form: ', this.props)
     return (
       <ScrollView style={styles.container}>
         <FormLabel>Name</FormLabel>
-        <FormInput defaultValue={this.props.formData && this.props.formData.name || ''} onChangeText={(txt) => this.props.setFormData({ name: txt})}/>
+        <FormInput
+          defaultValue={this.props.formData && this.props.formData.name || ''}
+          onChangeText={(txt) => this.props.setFormData({ name: txt})}
+        />
         <FormLabel>Balance</FormLabel>
         <FormInput
           keyboardType="numeric"
@@ -57,12 +63,24 @@ export default class Form extends Component {
           onChangeText={(txt) => this.props.setFormData({ balance: parseInt(txt)})}
         />
       {(this.props.type === 'INVESTMENT') && this.showHoldingsInputs()}
-      {(this.props.type === 'INVESTMENT') && <Button textStyle={styles.buttonTxt} buttonStyle={styles.button} title="Add Holding" onPress={() => this.addHoldingsInput(this.state.holdingsCount + 1)} />}
+      {(this.props.type === 'INVESTMENT') &&
+        <Button
+          textStyle={styles.buttonTxt}
+          buttonStyle={styles.button}
+          title="Add Holding"
+          onPress={() => this.addHoldingsInput(this.state.holdingsCount + 1)}
+        />
+      }
       </ScrollView>
     );
   }
 }
-
+Form.propTypes = {
+  accounts: PropTypes.arrayOf(PropTypes.object),
+  type: PropTypes.string.isRequired,
+  formData: PropTypes.object,
+  setFormData: PropTypes.func.isRequired,
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

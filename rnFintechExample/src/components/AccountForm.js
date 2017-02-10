@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
   View,
@@ -28,19 +28,18 @@ class AccountForm extends Component {
       type: 'DEBT',
       selectedIndex: 1,
     };
-    this.addAccount = this.addAccount.bind(this);
+    this.handleAddAccount = this.handleAddAccount.bind(this);
     this.updateIndex = this.updateIndex.bind(this);
+    this.createAccount = this.createAccount.bind(this);
   }
 
   /**
-   * addAccount - create the account object based on the type selectedIndex
-   * from the button group, and navigate back to the account summary
-   * @returns {undefined}
+   * createAccount - create an account based on the type selected
+   * @returns {Account} account
    */
-  addAccount() {
+  createAccount() {
     let account;
     const { name, balance, type } = this.state;
-    const { email, navigator, addAccount } = this.props;
     switch(type) {
       case 'CASH':
         account = new CashAccount(name, balance);
@@ -54,6 +53,15 @@ class AccountForm extends Component {
       default:
         break;
     }
+    return account;
+  }
+  /**
+   * handleAddAccount - create and add the account to the user
+   * @returns {undefined}
+   */
+  handleAddAccount() {
+    let account = this.createAccount();
+    const { email, navigator, addAccount } = this.props;
     addAccount(account, email);
     // perform server add request (ilustration purposes)
     ajaxAddAccount(email, account).then((res) =>{
@@ -62,7 +70,6 @@ class AccountForm extends Component {
         .done(() =>navigator.pop());
     });
   }
-
   /**
    * updateIndex - update the account
    * @param {number} selectedIndex - account index
@@ -81,7 +88,7 @@ class AccountForm extends Component {
     const { type, selectedIndex } = this.state;
     return (
       <View style={styles.container}>
-        <Header navigator={navigator}/>
+        <Header title="Add Account" navigator={navigator}/>
         <ButtonGroup
           selectedBackgroundColor="tomato"
           selectedTextStyle={{ color: 'white' }}
@@ -94,12 +101,21 @@ class AccountForm extends Component {
           setFormData={this.setState.bind(this)}
           type={type}
         />
-      <Button backgroundColor="tomato" buttonStyle={styles.button} title="Add Account" onPress={this.addAccount}/>
+      <Button
+        backgroundColor="tomato"
+        buttonStyle={styles.button}
+        title="Add Account"
+        onPress={this.handleAddAccount}
+      />
       </View>
     );
   }
 }
-
+AccountForm.propTypes = {
+  email: PropTypes.string.isRequired,
+  navigator: PropTypes.object.isRequired,
+  addAccount: PropTypes.func.isRequired,
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

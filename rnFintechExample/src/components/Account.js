@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
   View,
@@ -24,8 +24,8 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.removeAccount = this.removeAccount.bind(this);
-    this.updateAccount = this.updateAccount.bind(this);
+    this.handleRemoveAccount = this.handleRemoveAccount.bind(this);
+    this.handleUpdateAccount = this.handleUpdateAccount.bind(this);
   }
 
   /**
@@ -33,7 +33,7 @@ class Account extends Component {
    * and return to the account summary page
    * @returns {undefined}
    */
-  removeAccount() {
+  handleRemoveAccount() {
     const { selectedAccount, email, navigator, removeAccount, account } = this.props;
     removeAccount(selectedAccount, email);
     // perform server add request (ilustration purposes)
@@ -43,9 +43,9 @@ class Account extends Component {
         .done(() =>navigator.replace({ id: 'user'}));
     });
   }
-  updateAccount() {
-    const { selectedAccount, email, navigator, account } = this.props;
-    this.props.updateAccount(selectedAccount, email, this.state);
+  handleUpdateAccount() {
+    const { selectedAccount, email, navigator, account, updateAccount } = this.props;
+    updateAccount(selectedAccount, email, this.state);
     // perform server add request (ilustration purposes)
     ajaxUpdateAccount(email, account).then((res) =>{
       Promise.resolve(res.text())
@@ -58,15 +58,24 @@ class Account extends Component {
     if (account && account.type) {
       return (
         <View style={styles.container}>
-          <Header navigator={navigator}/>
-          <Text>Account Edit/Remove page</Text>
+          <Header title="Account Edit/Remove page" navigator={navigator}/>
           <Form
             setFormData={formData => this.setState(formData)}
             formData={account}
             type={account.type}
           />
-        <Button buttonStyle={styles.button} title="Update" backgroundColor="green" onPress={this.updateAccount} />
-          <Button buttonStyle={styles.button} title="Remove Account" backgroundColor="red" onPress={this.removeAccount}/>
+          <Button
+            buttonStyle={styles.button}
+            title="Update"
+            backgroundColor="green"
+            onPress={this.handleUpdateAccount}
+          />
+          <Button
+            buttonStyle={styles.button}
+            title="Remove Account"
+            backgroundColor="red"
+            onPress={this.handleRemoveAccount}
+          />
         </View>
       );
     }
@@ -77,7 +86,12 @@ class Account extends Component {
       />;
   }
 }
-
+Account.propTypes = {
+  account: PropTypes.object,
+  selectedAccount: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  navigator: PropTypes.object.isRequired,
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
