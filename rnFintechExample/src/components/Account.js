@@ -4,13 +4,22 @@ import {
   View,
   Text,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import Header from './Header';
 import Form from './Form';
 import { removeAccountAction, updateAccountAction } from '../actions';
+import {
+  updateAccount as ajaxUpdateAccount,
+  removeAccount as ajaxRemoveAccount,
+} from '../ajax';
 
+/**
+ * Account - dispaly account details and allow the user to edit or remove an account
+ * @extends Component
+ */
 class Account extends Component {
   constructor(props) {
     super(props);
@@ -25,36 +34,59 @@ class Account extends Component {
    * @returns {undefined}
    */
   removeAccount() {
-    const {selectedAccount ,email, navigator, removeAccount} = this.props;
+    const { selectedAccount, email, navigator, removeAccount, account } = this.props;
     removeAccount(selectedAccount, email);
-    navigator.pop();
+    // perform server add request (ilustration purposes)
+    ajaxRemoveAccount(email, account).then((res) =>{
+      Promise.resolve(res.text())
+        .then((msg) => alert(msg))
+        .done(() =>navigator.replace({ id: 'user'}));
+    });
   }
   updateAccount() {
-    const {selectedAccount ,email, navigator} = this.props;
+    const { selectedAccount, email, navigator, account } = this.props;
     this.props.updateAccount(selectedAccount, email, this.state);
-    navigator.pop();
+    // perform server add request (ilustration purposes)
+    ajaxUpdateAccount(email, account).then((res) =>{
+      Promise.resolve(res.text())
+        .then((msg) => alert(msg))
+        .done(() =>navigator.pop());
+    });
   }
   render() {
     const { navigator, account } = this.props;
-    return (
-      <View style={styles.container}>
-        <Header navigator={navigator}/>
-        <Text>Account Edit/Remove page</Text>
-        <Form
-          setFormData={formData => this.setState(formData)}
-          formData={account}
-          type={account.type}
-        />
-      <Button buttonStyle={styles.button} title="Update" backgroundColor="green" onPress={this.updateAccount} />
-        <Button buttonStyle={styles.button} title="Remove Account" backgroundColor="red" onPress={this.removeAccount}/>
-      </View>
-    );
+    if (account && account.type) {
+      return (
+        <View style={styles.container}>
+          <Header navigator={navigator}/>
+          <Text>Account Edit/Remove page</Text>
+          <Form
+            setFormData={formData => this.setState(formData)}
+            formData={account}
+            type={account.type}
+          />
+        <Button buttonStyle={styles.button} title="Update" backgroundColor="green" onPress={this.updateAccount} />
+          <Button buttonStyle={styles.button} title="Remove Account" backgroundColor="red" onPress={this.removeAccount}/>
+        </View>
+      );
+    }
+    return <ActivityIndicator
+        animating={true}
+        style={[styles.centering, {height: 80}]}
+        size="large"
+      />;
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    marginTop: 200,
   },
   button: {
     marginRight: 0,

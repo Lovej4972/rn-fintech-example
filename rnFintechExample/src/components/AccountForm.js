@@ -12,6 +12,7 @@ import CashAccount from '../dataTypes/accounts/CashAccount';
 import DebtAccount from '../dataTypes/accounts/DebtAccount';
 import InvestmentAccount from '../dataTypes/accounts/InvestmentAccount';
 import Form from './Form';
+import { addAccount as ajaxAddAccount } from '../ajax';
 
 /**
  * AccountForm - Add account form will allow adding a new account
@@ -54,7 +55,12 @@ class AccountForm extends Component {
         break;
     }
     addAccount(account, email);
-    navigator.pop();
+    // perform server add request (ilustration purposes)
+    ajaxAddAccount(email, account).then((res) =>{
+      Promise.resolve(res.text())
+        .then((msg) => alert(msg))
+        .done(() =>navigator.pop());
+    });
   }
 
   /**
