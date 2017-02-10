@@ -1,46 +1,13 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Node express server to demonstrate add/update/remove account actions
 
-### What is this repository for? ###
+This server is using post methods to accept email and account parameters and
+returns a successful message in return to the client app.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+#local install
 
-### How do I get set up? ###
-if you dont have mongodb installed
-`brew install mongodb`
-
-go to /path/apolloServer 
+go to /path/server
 run `yarn`
-run `mongod` to start the db
-run `node app.js` to start the server
-go to `http://localhost:8080/graphiql`
-
-try to run a query for the example schema:
-`query {
-  president(name: "George Washington") {
-    name
-    term
-    party
-  }
-}`
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+run `npm start` to start the server
+localhost: `http://localhost:8080/`
